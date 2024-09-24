@@ -20,7 +20,7 @@ app.get("/",( req,res)=>{
         res.send("dbhcd");
 })
 app.post("/",(req,res)=>{
-    res.send("This is post response!");
+    res.send("This is post respone!");
 })
 
 app.patch("/",(req,res)=>{
