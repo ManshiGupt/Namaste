@@ -1,0 +1,93 @@
+mongodb+srv://Namastedev:<Q0HcIR8umYKhVMFL>@namastenode.6ai8e.mongodb.net/
+
+
+mongodb+srv://Namastedev:<db_password>@namastenode.6ai8e.mongodb.net/
+
+
+
+NamasteCluster
+
+
+heymanshigupta
+
+AfD5GJZhfBhAqosH
+
+mongodb+srv://heymanshigupta:AfD5GJZhfBhAqosH@namastecluster.ebvtp.mongodb.net/
+
+
+
+// app.post("/signup",async (req,res)=>{ 
+      
+//       //always put validation inside try catch so that erroe visible
+//       try{
+//       // validateSignUpData(req);
+//       const{firstName, emailId, password}= req.body;
+//       const passwordHash = await bcrypt.hash(password,10);
+//       // passwordHash.then(()=>{
+//         console.log(passwordHash);
+//       // })
+      
+//       // const user = new User(req.body); this is wrong way to do all body must not be allowed to save
+      
+//       const user = new User({
+//         firstName,
+        
+//         emailId,
+//         password:passwordHash,
+//       });
+//         await user.save();
+//         res.send("success");
+//       }catch(err){
+//         res.send(" this is error"+ err);
+//       }
+      
+// })
+
+
+// app.post("/login",async(req,res)=>{
+//     const{emailId, password}= req.body;
+//     console.log(emailId);
+//     console.log(password);
+//     try {
+//       const user =new User.findById({password:password});
+//       // if(!user){
+//       //   throw new Error('email not found')
+//       // }
+//       // const isValid = await bcrypt.compare(password,user.password);
+//       // console.log(isValid);
+//       console.log(user);
+//       console.log("Sdiuhufuwf")
+//       res.send(user);
+//     } catch (error) {
+//       res.send(error);
+//     }
+    
+// })
+
+
+// app.post("/login",async(req,res)=>{
+//       const {emailId, password} = req.body;
+//       const user = new User.find({emailId:emailId})
+//       if(!user){
+//         throw new Error("dhhdgnot user")
+//       }
+//       const ispassValid = await bcrypt.compare(password,user.password);
+//       if(ispassValid){
+//           res.send("Login success ful")
+//       }
+
+// })
+
+
+app.post("/signup",async(req,res)=>{
+    const{emailId,password}= req.body;
+    try {
+      const user = new User(req);
+      await user.save();
+      res.send("sucess signup")
+    } catch (error) {
+      // throw new Error("this is not good", error);
+      res.send("sucess gadabad")
+    }
+   
+})
