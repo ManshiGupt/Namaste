@@ -2,16 +2,16 @@ const express = require("express");
 const authRouter = express.Router();
 const User = require('../models/user')
 const bcrypt= require("bcrypt");
-const validateSignUpData = require("../utils/validation")
+const {validationForSignin} = require("../utils/validation")
 const {getJWT} = require("../models/user");
 const { message } = require("antd");
 
-// const authRouter =()=>{
+
     authRouter.post("/signin",async(req, res)=>{
         const{firstName, lastName, emailId, password}= req.body;
         
         try{
-          validateSignUpData(req);
+          validationForSignin(req);
           const existingUser = await User.findOne({emailId:emailId});
         if(existingUser){
             throw new Error (" user already exist.");
@@ -27,7 +27,7 @@ const { message } = require("antd");
         if(error.message === " user already exist."){
           res.status(404).send(error.message);
         }
-        else if(error.message === "no ln and fn"){
+        else if(error.message === "firstName and lastName is necessary for this action"){
           res.status(404).send(error.message);
         }
         else if(error.message === "no email right"){
@@ -36,7 +36,7 @@ const { message } = require("antd");
         else if(error.message === "entered password wrong"){
           res.status(404).send("entered password wroong"+ error.message);
         }
-         else{res.status(404).send("entered password wrong "+error.message)} 
+         else{res.status(404).send("entered password wrong: "+error.message)} 
       }
     })
     authRouter.post("/login",async(req,res)=>{
@@ -48,12 +48,12 @@ const { message } = require("antd");
             throw new Error("User not Exist in email");
           }
           const isPassValid =await user.validatePassword(password)
-          if(!isPassValid){
-            throw new Error("n")
+          if(isPassValid){
+            const token = await user.getJWT();
+          res.cookie("token", token);
            
           }
-          const token = await user.getJWT();
-          res.cookie("manshi", token);
+          
           res.send("logedin")
           
         } catch (error) {

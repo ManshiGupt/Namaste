@@ -6,7 +6,7 @@ const userAuth = async (req,res,next) => {
     
     try {
         
-        const token= req.cookies.manshi;
+        const token= req.cookies.token;
         console.log(token);
     if(!token){
         throw new Error("not valid token");

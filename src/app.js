@@ -245,7 +245,7 @@ const express = require('express');
 const app = express();
 // const router = express.Router();
 const connectDB= require("./config/m");
-const validateSignUpData= require("./utils/validation")
+const {validationForSignin}= require("./utils/validation")
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -262,6 +262,15 @@ app.use(cookieParser())
 
 app.use("/",authRouter);
 app.use("/profile",router);
+
+app.get("/f",(req,res)=>{
+  try {
+    validationForSignin(req);
+    res.send("dj")
+  } catch (error) {
+    res.send("cc"+error.message)
+  }
+})
 
 // app.post("/signin",async(req, res)=>{
 //     const{firstName, lastName, emailId, password}= req.body;

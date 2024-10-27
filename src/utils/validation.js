@@ -1,56 +1,25 @@
-// const validator = require("validator")
-// const  validateSignUpData=(req)=>{
-//     const {firstName, lastName, emailId, password}= req.body;
-//         if(!firstName || !lastName){
-//             throw new Error('Parameter is not a number!');
-//         }else if(!validator.isEmail(emailId)){
-//             throw new Error("this email not valide")
-        
-//         }else if(!validator.isStrongPassword(password)){
-//             throw new Error('Parameter is not a pass!');
-//         }
-//         }
+const validator = require("validator");
 
+const validationForSignin = async (req) => {
+    const { firstName, lastName, emailId, password } = req.body;
 
-
-// module.exports= validateSignUpData
-
-
-
-
-const validator = require("validator")
-const validateSignUpData =(req)=>{
-    const {firstName,lastName, emailId, password}= req.body;
-    if(!firstName || !lastName){
-        throw new Error("no ln and fn");
+    if (!firstName || !lastName) {
+        throw new Error("First name and last name are required.");
     }
-     if(!validator.isEmail(emailId)){
-        throw new Error("no email right");
+    if (!validator.isEmail(emailId)) {
+        throw new Error("Invalid email format.");
     }
-    //  if(!validator.isStrongPassword(password)){
-    //     throw new Error("entered password wrong");
-    // }
-}
+    if (!validator.isStrongPassword(password)) {
+        throw new Error("Password is not strong enough.");
+    }
+};
 
-module.exports = validateSignUpData
+const validationForProfileEdit = async (req) => {
+    const allowedList = ["about", "skill"];
 
+    if (!Object.keys(req.body).every((key) => allowedList.includes(key))) {
+        throw new Error("Invalid field in profile edit request.");
+    }
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = { validationForSignin, validationForProfileEdit };
