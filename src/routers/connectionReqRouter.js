@@ -1,11 +1,55 @@
+const express = require("express");
+const userAuth = require("../middleware/auth");
+const requestRouter = express.Router();
+const ConnectionRequestModel = require("../models/connectionRequest");
+const { message } = require("antd");
+const User = require("../models/user");
+const user = require("../models/user");
 
+requestRouter.post(
+  "/request/send/:status/:toUserId",
+  userAuth,
+  async (req, res) => {
+    try {
+      const fromUserId = req.user._id;
+      const toUserId = req.params.toUserId;
+      const status = req.params.status;
 
-const  a=()=>{
-    app.post("/sendconnection",userAuth,(req, res)=>{
-        
+      //validation for status
+      const allowedStatus = ["intersted", "ignored"];
+      if (!allowedStatus.includes(status)) {
+        return res.json({ message: "status in params is not allowed" });
+      }
+      //toUserId should be in user collection
 
-    })
+      
 
-}
+      const existConnection = await ConnectionRequestModel.findOne({
+        $or: [
+          { fromUserId, toUserId },
+          { fromUserId: toUserId, toUserId: fromUserId },
+        ],
+      });
 
-module.exports = a
+      if(existConnection){
+        return res.status(400).send("erooe while existConnection ");
+      }
+      //toUserId exist
+
+      const validtoUserId= await User.findById(toUserId);
+      if(!validtoUserId){
+        return res.status(400).send("erooe while toUserId doesnot existS ");
+      }
+      const dataa = new ConnectionRequestModel({ fromUserId, toUserId, status });
+      const data= await dataa.save();
+
+      res.json({ message: "lo", data });
+    } catch (error) {
+      res.status(400).send("erooe while routing connection: " + error.message);
+      // res.status(400).json({ message: "Error while routing connection", error: error.message });
+    }
+  }
+);
+
+module.exports = requestRouter;
+
