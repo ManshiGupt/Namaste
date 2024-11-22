@@ -21,6 +21,9 @@ const connectionRequestSchema= new mongoose.Schema({
 
 // const ConnectionModel = mongoose.model("ConnectionModel", connectionSchema)
 //validation for touserId= FromuserId
+
+connectionRequestSchema.index({toUserId:1, fromUserId:1});
+
 connectionRequestSchema.pre('save',function(next){
     const connectionRequest= this;
     if(connectionRequest.toUserId.equals(connectionRequest.fromUserId)){
