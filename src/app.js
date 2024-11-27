@@ -15,7 +15,8 @@ const validatePassword = require("./models/user")
 const authRouter = require("./routers/auth");
 const router = require("./routers/profileRouter")
 const ConnectionModel = require("./models/connectionRequest")
-const requestRouter = require("./routers/connectionReqRouter")
+const requestRouter = require("./routers/connectionReqRouter");
+const userRouter = require("./routers/user");
 
 app.use(express.json());
 app.use(cookieParser())
@@ -24,6 +25,7 @@ app.use(cookieParser())
 app.use("/", authRouter);
 app.use("/", router);
 app.use("/", requestRouter);
+app.use("/",userRouter);
 
 app.get("/f", async (req, res) => {
   try {

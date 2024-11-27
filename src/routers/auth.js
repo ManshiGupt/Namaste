@@ -32,6 +32,9 @@ const { message } = require("antd");
         }
         else if(error.message === "no email right"){
           res.status(404).send(error.message);
+        } 
+        else if(error.message === "Password is not strong enough."){
+          res.status(404).send("Password is not strong enough."+ error.message);
         }
         else if(error.message === "entered password wrong"){
           res.status(404).send("entered password wroong"+ error.message);

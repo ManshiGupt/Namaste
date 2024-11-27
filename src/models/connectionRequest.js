@@ -4,12 +4,15 @@ const mongoose= require("mongoose");
 const connectionRequestSchema= new mongoose.Schema({
     toUserId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required:true
     },
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required:true
     },
+   
     status:{
         type:String,
         enum:{
